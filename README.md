@@ -4,7 +4,7 @@ Maestro
 There are 2 types of performers:
 
 #### Local
-This option can be either `local` or `localhost`.  It specifies that the composition should be played on the local machine.
+This option can be either `local`.  It specifies that the composition should be played on the local machine.
 
 #### Remote
 This option can be a single host or a comma delimited list of hosts.
