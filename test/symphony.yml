@@ -1,0 +1,12 @@
+local:
+    composition:
+    - date
+
+localhost:
+    user: abs
+    composition:
+    - hostname
+
+localhost,localhost:
+    composition:
+    - hostname
