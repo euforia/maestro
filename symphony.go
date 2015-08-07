@@ -11,6 +11,7 @@ import (
 )
 
 type Symphony struct {
+	Name        string   `yaml:"name"`
 	Performers  []string `yaml:"performer"`
 	Parallel    bool     `yaml:"parallel"`
 	User        string   `yaml:"user"`

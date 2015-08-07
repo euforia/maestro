@@ -19,10 +19,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	for _, s := range symphs {
-		if err = s.Play(); err != nil {
-			fmt.Printf("%s\n", err)
-			os.Exit(2)
-		}
+	concert := NewConcert(symphs)
+	if err = concert.Start(flag.Args()...); err != nil {
+		fmt.Printf("%s\n", err)
+		os.Exit(2)
 	}
 }

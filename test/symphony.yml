@@ -1,10 +1,12 @@
 - performer: 
   - local
+  name: date
   composition:
   - date
 
 - performer:
   - localhost
+  name: hostname
   user: abs
   composition:
   - hostname
@@ -12,5 +14,6 @@
 - performer: 
   - localhost
   - localhost
+  name: multi-hostname
   composition:
   - hostname
