@@ -15,7 +15,7 @@ func main() {
 
 	symphs, err := LoadSymphonies(*symphFile)
 	if err != nil {
-		fmt.Printf("%s\n", err)
+		fmt.Printf("Failed to load symphonies: %s\n", err)
 		os.Exit(1)
 	}
 
