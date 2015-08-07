@@ -1,12 +1,16 @@
-local:
-    composition:
-    - date
+- performer: 
+  - local
+  composition:
+  - date
 
-localhost:
-    user: abs
-    composition:
-    - hostname
+- performer:
+  - localhost
+  user: abs
+  composition:
+  - hostname
 
-localhost,localhost:
-    composition:
-    - hostname
+- performer: 
+  - localhost
+  - localhost
+  composition:
+  - hostname

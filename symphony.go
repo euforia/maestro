@@ -2,28 +2,23 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"strings"
+
+	"gopkg.in/yaml.v2"
 
 	"github.com/euforia/loom"
 )
 
 type Symphony struct {
-	Performer   string   `yaml:"performer"`
+	Performers  []string `yaml:"performer"`
 	Parallel    bool     `yaml:"parallel"`
 	User        string   `yaml:"user"`
 	Composition []string `yaml:"composition"` // set of commands to run on a given host
 }
 
-func (s *Symphony) Play() (err error) {
-	if s.IsLocal() {
-		return s.runLocal()
-	} else {
-		return s.runRemotes()
-	}
-}
-
-func (s *Symphony) IsLocal() bool {
-	return s.Performer == "local"
+func (s *Symphony) isLocal(performer string) bool {
+	return performer == "local"
 }
 
 func (s *Symphony) runLocal() (err error) {
@@ -33,10 +28,14 @@ func (s *Symphony) runLocal() (err error) {
 	)
 
 	for _, comp := range s.Composition {
+		fmt.Printf("[local] %s\n", comp)
 		if output, err = local.Local(comp); err != nil {
+			//fmt.Printf("[local] %s %s\n", comp, err)
 			return
 		}
-		fmt.Printf("[local] %s\n", strings.TrimRight(output, "\n"))
+		for _, v := range strings.Split(output, "\n") {
+			fmt.Printf("[local] %s\n", v)
+		}
 	}
 
 	return
@@ -60,24 +59,44 @@ func (s *Symphony) runRemote(host string) (err error) {
 	return
 }
 
-func (s *Symphony) runRemotes() (err error) {
-	hostList := strings.Split(s.Performer, ",")
+func (s *Symphony) singleRun(host string) (err error) {
+	if s.isLocal(strings.TrimSpace(host)) {
+		return s.runLocal()
+	} else {
+		return s.runRemote(strings.TrimSpace(host))
+	}
+	return nil
+}
+
+func (s *Symphony) Play() (err error) {
 	if s.Parallel {
-		for _, v := range hostList {
+		for _, v := range s.Performers {
 			go func() {
-				host := strings.TrimSpace(v)
-				if err = s.runRemote(host); err != nil {
+				if err = s.singleRun(v); err != nil {
 					return
 				}
 			}()
 		}
 	} else {
-		for _, v := range hostList {
-			host := strings.TrimSpace(v)
-			if err = s.runRemote(host); err != nil {
+		for _, v := range s.Performers {
+			if err = s.singleRun(v); err != nil {
 				return
 			}
 		}
+	}
+	return
+}
+
+func LoadSymphonies(cfgfile string) (symphs []Symphony, err error) {
+	var (
+		b []byte
+	)
+	if b, err = ioutil.ReadFile(cfgfile); err != nil {
+		return
+	}
+
+	if err = yaml.Unmarshal(b, &symphs); err != nil {
+		return
 	}
 	return
 }

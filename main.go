@@ -13,14 +13,16 @@ var (
 func main() {
 	flag.Parse()
 
-	orch, err := LoadOrchestra(*symphFile)
+	symphs, err := LoadSymphonies(*symphFile)
 	if err != nil {
 		fmt.Printf("%s\n", err)
 		os.Exit(1)
 	}
 
-	if err = orch.Play(); err != nil {
-		fmt.Printf("%s\n", err)
-		os.Exit(2)
+	for _, s := range symphs {
+		if err = s.Play(); err != nil {
+			fmt.Printf("%s\n", err)
+			os.Exit(2)
+		}
 	}
 }
