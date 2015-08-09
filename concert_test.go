@@ -5,7 +5,7 @@ import (
 )
 
 var (
-	testSymphonies, _ = LoadSymphonies(testFile)
+	testSymphonies, _ = LoadSymphony(testFile)
 )
 
 func Test_Concert_Start(t *testing.T) {

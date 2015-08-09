@@ -4,6 +4,12 @@
   composition:
   - date
 
+- performer: 
+  - local
+  name: git-version
+  composition:
+  - git version
+
 - performer:
   - localhost
   name: hostname

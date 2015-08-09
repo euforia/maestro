@@ -31,11 +31,10 @@ func (s *Symphony) runLocal() (err error) {
 	for _, comp := range s.Composition {
 		fmt.Printf("[local] %s\n", comp)
 		if output, err = local.Local(comp); err != nil {
-			//fmt.Printf("[local] %s %s\n", comp, err)
 			return
 		}
 		for _, v := range strings.Split(output, "\n") {
-			fmt.Printf("[local] %s\n", v)
+			fmt.Printf("[local] %s", v)
 		}
 	}
 
@@ -55,7 +54,7 @@ func (s *Symphony) runRemote(host string) (err error) {
 		if output, err = remote.Run(comp); err != nil {
 			return
 		}
-		fmt.Printf("[%s] %s\n", host, strings.TrimRight(output, "\n"))
+		fmt.Printf("[%s] %s", host, strings.TrimRight(output, "\n"))
 	}
 	return
 }
@@ -88,7 +87,7 @@ func (s *Symphony) Play() (err error) {
 	return
 }
 
-func LoadSymphonies(cfgfile string) (symphs []Symphony, err error) {
+func LoadSymphony(cfgfile string) (symphs []Symphony, err error) {
 	var (
 		b []byte
 	)
